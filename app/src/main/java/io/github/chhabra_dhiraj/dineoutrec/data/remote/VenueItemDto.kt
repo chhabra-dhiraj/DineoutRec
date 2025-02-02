@@ -8,5 +8,5 @@ data class VenueItemDto(
     @SerialName("image")
     val image: VenueImageDto,
     @SerialName("venue")
-    val venue: Venue
+    val venue: VenueDto
 ) : SectionItemDto()

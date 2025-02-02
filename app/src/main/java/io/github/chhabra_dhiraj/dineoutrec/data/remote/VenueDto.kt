@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Venue(
+data class VenueDto(
     @SerialName("id")
     val id: String, // TODO: Exception for this to be handled when this comes out to be null
     @SerialName("name")
