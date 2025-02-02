@@ -7,6 +7,7 @@ import io.github.chhabra_dhiraj.dineoutrec.domain.model.Venue
 import io.github.chhabra_dhiraj.dineoutrec.domain.model.VenueImage
 import io.github.chhabra_dhiraj.dineoutrec.domain.model.VenueItem
 
+// TODO: Revisit the plural case of this file name - Restaurants
 // TODO: Revisit this comment
 /**
 Note: Only the fields required for this assignment are mapped. RestaurantsMapper is a generalised
