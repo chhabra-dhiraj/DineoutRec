@@ -7,5 +7,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class RestaurantsDto(
     @SerialName("sections")
-    val sections: List<SectionDto>
+    val sections: List<SectionDto<*>>
 )
