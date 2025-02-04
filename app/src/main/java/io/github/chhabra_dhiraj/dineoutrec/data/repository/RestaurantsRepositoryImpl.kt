@@ -56,7 +56,7 @@ class RestaurantsRepositoryImpl @Inject constructor(
         }
     }
 
-    // TODO: Revisit the comment here
+    // TODO: Revisit the comment here. Also, revisit if the "D" should be in or out here
     /**
      * This is added in case more func are added in future for a real-world scenario should this
      * assignment be scaled.
