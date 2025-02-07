@@ -1,15 +1,18 @@
 package io.github.chhabra_dhiraj.dineoutrec.data.remote
 
+import io.github.chhabra_dhiraj.dineoutrec.data.mapper.SectionDtoSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-// TODO: Check whether generic type SI should be out or in or something else
-@Serializable
-data class SectionDto<out SI: SectionItemDto>(
-    // It's default null for the case when content_type field is not present in the api response
-    @SerialName("content_type")
-    val contentType: String? = null,
+@Serializable(with = SectionDtoSerializer::class)
+sealed class SectionDto {
 
-    @SerialName("items")
-    val items: List<SI>
-)
+    @SerialName("title")
+    abstract val title: String
+}
+
+// TODO: Revisit this comment
+// This class is necessary to create for class discrimination, however, for this assignment,
+// only VenueSectionDto and NoVenueSectionDto is needed
+@Serializable
+data class VenueCategorySectionDto(override val title: String) : SectionDto()

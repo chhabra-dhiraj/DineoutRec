@@ -6,9 +6,10 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class VenueDto(
     @SerialName("id")
-    val id: String, // TODO: Exception for this to be handled when this comes out to be null
+    val id: String,
     @SerialName("name")
-    val name: String, // TODO: Exception for this to be handled when this comes out to be null
+    val name: String,
+    // Optional field, therefore default is null
     @SerialName("short_description")
-    val shortDescription: String // TODO: Exception for this to be handled when this comes out to be null
+    val shortDescription: String? = null
 )

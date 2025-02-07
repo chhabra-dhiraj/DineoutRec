@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class VenueImageDto(
     @SerialName("url")
-    val url: String // TODO: Exception for this to be handled when this comes out to be null
+    val url: String
 )
