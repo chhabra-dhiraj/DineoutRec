@@ -4,7 +4,8 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class VenueImageDto(
-    @SerialName("url")
-    val url: String
-)
+data class VenueSectionDto(
+    override val title: String,
+    @SerialName("items")
+    val items: List<VenueItemDto>
+) : SectionDto()
