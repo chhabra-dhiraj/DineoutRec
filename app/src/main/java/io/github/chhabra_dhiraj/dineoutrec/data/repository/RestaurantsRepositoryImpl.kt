@@ -18,6 +18,8 @@ class RestaurantsRepositoryImpl @Inject constructor(
     private val api: RestaurantsApi
 ) : RestaurantsRepository {
 
+    // TODO: Revisit this and check if it is scalable and makes sense when
+    //  getVenueCategorySection is introduced as both would be returning 'Section' data
     override suspend fun getVenueSection(
         latitude: Double,
         longitude: Double
@@ -29,7 +31,6 @@ class RestaurantsRepositoryImpl @Inject constructor(
                 longitude = longitude
             )
 
-            // TODO: Check if using sequence makes sense here
             val venueSection = (restaurants.sections
                 .find { sectionDto: SectionDto ->
                     sectionDto is VenueSectionDto
