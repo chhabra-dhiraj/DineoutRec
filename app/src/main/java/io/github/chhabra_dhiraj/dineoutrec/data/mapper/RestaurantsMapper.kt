@@ -25,10 +25,9 @@ import kotlinx.serialization.json.jsonPrimitive
 // TODO: Revisit this comment
 /**
 Note: Only the fields required for this assignment are mapped. RestaurantsMapper is a generalised
-mapper name in case other fields (SectionDto, for example) are needed to be mapped should this
+mapper name in case other fields (RestaurantsDto, for example) need to be mapped should this
 project be scaled in a real-world scenario
  */
-
 fun VenueSectionDto.toVenueSection() = VenueSection(
     title = title,
     items = items.map { venueItemDto ->
@@ -60,23 +59,17 @@ private fun VenueDto.toVenue() = Venue(
 // TODO: Revisit if const below should be internal or should be inside a separate constants class
 // TODO: Revisit this comment
 // TODO: Check if there are more templates available
-// Four below values possible for 'template', but for this assignment, only first 3 are used
-// 1. venue-vertical-list
-// 2. banner-small
-// 3. no-content
-// 4. no-location
+
+/**
+ * Four below values possible for 'template', but for this assignment, only first 3 are used
+ * 1. venue-vertical-list
+ * 2. banner-small
+ * 3. no-content
+ * 4. no-location
+ **/
 internal const val SECTION_CLASS_DISCRIMINATOR = "template"
 
 // TODO: Refactor this
-/**
-In case, a dto with a SECTION_CLASS_DISCRIMINATOR is not present should the project
-be scaled in the future in a real-world scenario, two things will happen:
-1. Either, it has separate mandatory fields from VenueSectionDto. In this case,
-an automatic exception would be thrown, and the app will show unknown error but
-would not crash
-2. Or, if not 1. case, then, that case is handled in RestaurantsRepositoryImpl's
-caller function
- */
 object SectionDtoSerializer : JsonContentPolymorphicSerializer<SectionDto>(SectionDto::class) {
     override fun selectDeserializer(element: JsonElement): DeserializationStrategy<SectionDto> {
         if (element is JsonObject) {
@@ -84,12 +77,15 @@ object SectionDtoSerializer : JsonContentPolymorphicSerializer<SectionDto>(Secti
                 Section.Companion.TEMPLATE.VENUE_SECTION.value -> {
                     VenueSectionDto.serializer()
                 }
+
                 Section.Companion.TEMPLATE.VENUE_CATEGORY_SECTION.value -> {
                     VenueCategorySectionDto.serializer()
                 }
+
                 Section.Companion.TEMPLATE.NO_VENUE_SECTION.value -> {
                     NoVenueSectionDto.serializer()
                 }
+
                 else -> {
                     throw SerializationException(
                         // TODO: Refactor below method
