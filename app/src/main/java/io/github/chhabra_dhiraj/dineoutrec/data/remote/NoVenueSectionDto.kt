@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class NoVenueSectionDto(
+    override val title: String,
     @SerialName("description")
-    val description: String,
-    override val title: String
+    val description: String
 ) : SectionDto()
