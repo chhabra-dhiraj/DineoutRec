@@ -1,5 +1,6 @@
 package io.github.chhabra_dhiraj.dineoutrec.presentation.component
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -14,10 +15,12 @@ import coil.compose.SubcomposeAsyncImage
 import io.github.chhabra_dhiraj.dineoutrec.R
 import io.github.chhabra_dhiraj.dineoutrec.presentation.ui.theme.DineoutRecTheme
 
+// TODO: Rename to a better name
 @Composable
 fun BasicScreenInternetImage(
     modifier: Modifier = Modifier,
     imageUrl: String,
+    @DrawableRes errorDrawableId: Int = R.drawable.baseline_broken_image_24,
     contentScale: ContentScale = ContentScale.Fit
 ) {
     SubcomposeAsyncImage(
@@ -33,16 +36,16 @@ fun BasicScreenInternetImage(
         error = {
             Image(
                 imageVector = ImageVector.vectorResource(
-                    id = R.drawable.baseline_fastfood_24
+                    id = errorDrawableId
                 ),
-                contentDescription = null
+                contentDescription = null // TODO: add this
             )
         },
         contentScale = contentScale
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun BasicScreenInternetImage_Preview() {
     DineoutRecTheme {

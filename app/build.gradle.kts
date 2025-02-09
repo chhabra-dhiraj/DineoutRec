@@ -78,6 +78,9 @@ dependencies {
     // Logging with Timber
     implementation(libs.timber)
 
+    // DataStore
+    implementation(libs.androidx.datastore.preferences)
+
     // Tests
     testImplementation(libs.junit)
     testImplementation(libs.mockito.core)

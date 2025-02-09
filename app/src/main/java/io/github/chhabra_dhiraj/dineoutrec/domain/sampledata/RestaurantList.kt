@@ -15,7 +15,8 @@ fun getSampleRestaurantList() = listOf(
             id = "1",
             name = "Restaurant Name",
             shortDescription = "Short Description"
-        )
+        ),
+        isFavourite = false
     ),
     VenueItem(
         image = VenueImage(
@@ -25,7 +26,8 @@ fun getSampleRestaurantList() = listOf(
             id = "2",
             name = "Restaurant Name",
             shortDescription = "Short Description"
-        )
+        ),
+        isFavourite = false
     ),
     VenueItem(
         image = VenueImage(
@@ -35,7 +37,8 @@ fun getSampleRestaurantList() = listOf(
             id = "3",
             name = "Restaurant Name",
             shortDescription = null
-        )
+        ),
+        isFavourite = false
     ),
     VenueItem(
         image = VenueImage(
@@ -45,7 +48,8 @@ fun getSampleRestaurantList() = listOf(
             id = "4",
             name = "Restaurant Name",
             shortDescription = null
-        )
+        ),
+        isFavourite = true
     ),
     VenueItem(
         image = VenueImage(
@@ -55,7 +59,8 @@ fun getSampleRestaurantList() = listOf(
             id = "5",
             name = "Restaurant Name",
             shortDescription = "Short Description"
-        )
+        ),
+        isFavourite = true
     ),
     VenueItem(
         image = VenueImage(
@@ -65,7 +70,8 @@ fun getSampleRestaurantList() = listOf(
             id = "6",
             name = "Restaurant Name",
             shortDescription = "Short Description"
-        )
+        ),
+        isFavourite = false
     ),
     VenueItem(
         image = VenueImage(
@@ -75,7 +81,8 @@ fun getSampleRestaurantList() = listOf(
             id = "7",
             name = "Restaurant Name",
             shortDescription = "Short Description"
-        )
+        ),
+        isFavourite = false
     ),
     VenueItem(
         image = VenueImage(
@@ -85,7 +92,8 @@ fun getSampleRestaurantList() = listOf(
             id = "8",
             name = "Restaurant Name",
             shortDescription = "Short Description"
-        )
+        ),
+        isFavourite = false
     ),
     VenueItem(
         image = VenueImage(
@@ -95,7 +103,8 @@ fun getSampleRestaurantList() = listOf(
             id = "9",
             name = "Restaurant Name",
             shortDescription = "Short Description"
-        )
+        ),
+        isFavourite = false
     ),
     VenueItem(
         image = VenueImage(
@@ -105,7 +114,8 @@ fun getSampleRestaurantList() = listOf(
             id = "10",
             name = "Restaurant Name",
             shortDescription = "Short Description"
-        )
+        ),
+        isFavourite = false
     ),
     VenueItem(
         image = VenueImage(
@@ -115,7 +125,8 @@ fun getSampleRestaurantList() = listOf(
             id = "11",
             name = "Restaurant Name",
             shortDescription = "Short Description"
-        )
+        ),
+        isFavourite = false
     ),
     VenueItem(
         image = VenueImage(
@@ -125,7 +136,8 @@ fun getSampleRestaurantList() = listOf(
             id = "13",
             name = "Restaurant Name",
             shortDescription = "Short Description"
-        )
+        ),
+        isFavourite = true
     ),
     VenueItem(
         image = VenueImage(
@@ -135,7 +147,8 @@ fun getSampleRestaurantList() = listOf(
             id = "14",
             name = "Restaurant Name",
             shortDescription = "Short Description"
-        )
+        ),
+        isFavourite = false
     ),
     VenueItem(
         image = VenueImage(
@@ -145,7 +158,8 @@ fun getSampleRestaurantList() = listOf(
             id = "15",
             name = "Restaurant Name",
             shortDescription = "Short Description"
-        )
+        ),
+        isFavourite = false
     ),
     VenueItem(
         image = VenueImage(
@@ -155,6 +169,7 @@ fun getSampleRestaurantList() = listOf(
             id = "1",
             name = "Restaurant Name",
             shortDescription = "Short Description"
-        )
+        ),
+        isFavourite = true
     )
 )

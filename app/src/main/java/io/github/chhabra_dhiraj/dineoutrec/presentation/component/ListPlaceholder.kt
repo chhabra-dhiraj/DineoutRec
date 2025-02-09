@@ -88,7 +88,8 @@ fun ErrorListPlaceholder(
     }
 }
 
-@Preview
+// For Empty List
+@Preview(showBackground = true)
 @Composable
 private fun EmptyListPlaceholder_Preview() {
     DineoutRecTheme {
@@ -102,14 +103,15 @@ private fun EmptyListPlaceholder_Preview() {
                 ),
         ) {
             EmptyListPlaceholder(
-                title = "empty title",
-                subtitle = "empty subtitle"
+                title = "title",
+                subtitle = "subtitle"
             )
         }
     }
 }
 
-@Preview
+// For Loading
+@Preview(showBackground = true)
 @Composable
 private fun LoadingListPlaceholder_Preview() {
     DineoutRecTheme {
@@ -127,7 +129,8 @@ private fun LoadingListPlaceholder_Preview() {
     }
 }
 
-@Preview
+// For error
+@Preview(showBackground = true)
 @Composable
 private fun ErrorListPlaceholder_Preview() {
     DineoutRecTheme {

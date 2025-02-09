@@ -28,11 +28,9 @@ Note: Only the fields required for this assignment are mapped. RestaurantsMapper
 mapper name in case other fields (RestaurantsDto, for example) need to be mapped should this
 project be scaled in a real-world scenario
  */
-fun VenueSectionDto.toVenueSection() = VenueSection(
+fun VenueSectionDto.toVenueSection(items: List<VenueItem>) = VenueSection(
     title = title,
-    items = items.map { venueItemDto ->
-        venueItemDto.toVenueItem()
-    }
+    items = items
 )
 
 fun NoVenueSectionDto.toNoVenueSection() = NoVenueSection(
@@ -40,9 +38,10 @@ fun NoVenueSectionDto.toNoVenueSection() = NoVenueSection(
     description = description
 )
 
-private fun VenueItemDto.toVenueItem() = VenueItem(
+fun VenueItemDto.toVenueItem(isFavourite: Boolean) = VenueItem(
     image = image.toVenueImage(),
-    venue = venue.toVenue()
+    venue = venue.toVenue(),
+    isFavourite = isFavourite
 )
 
 private fun VenueImageDto.toVenueImage() = VenueImage(

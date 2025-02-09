@@ -27,7 +27,7 @@ fun BasicScreenHeader(
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun BasicScreenHeader_Preview() {
     DineoutRecTheme {
