@@ -63,7 +63,7 @@ fun ProximityRestaurantListItem(
                 ),
             contentScale = ContentScale.Crop,
             imageUrl = restaurant.image.url,
-            errorDrawableId = R.drawable.baseline_fastfood_24
+            errorDrawableResId = R.drawable.baseline_fastfood_24
         )
         Box(
             modifier = Modifier
