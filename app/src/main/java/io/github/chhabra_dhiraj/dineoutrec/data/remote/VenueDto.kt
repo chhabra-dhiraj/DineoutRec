@@ -9,7 +9,10 @@ data class VenueDto(
     val id: String,
     @SerialName("name")
     val name: String,
-    // Optional field, therefore default is null
+    /*
+    Optional field (some restaurants from api response do not have this field at all),
+    therefore default is null
+    */
     @SerialName("short_description")
     val shortDescription: String? = null
 )
