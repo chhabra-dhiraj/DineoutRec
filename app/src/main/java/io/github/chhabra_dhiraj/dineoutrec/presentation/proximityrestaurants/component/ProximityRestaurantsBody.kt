@@ -3,8 +3,6 @@ package io.github.chhabra_dhiraj.dineoutrec.presentation.proximityrestaurants.co
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
@@ -42,15 +40,19 @@ fun ProximityRestaurantsBody(
                             dimensionResource(
                                 id = R.dimen.spacing32
                             )
-                        )
-                        .verticalScroll(// TODO: Find a better way to trigger pull to refresh
-                            state = rememberScrollState()
                         ),
                     placeholder = {
                         EmptyListPlaceholder(
+                            modifier = Modifier.fillMaxSize(),
                             // TODO: Refactor this by introducing uiState
                             title = state.noVenueSection?.title ?: "",
-                            subtitle = state.noVenueSection?.description ?: ""
+                            subtitle = state.noVenueSection?.description ?: "",
+                            onRetry = {
+                                onEvent(
+                                    ProximityRestaurantsEvent
+                                        .OnManualRefreshProximityRestaurants
+                                )
+                            }
                         )
                     })
             }
@@ -63,12 +65,9 @@ fun ProximityRestaurantsBody(
                             dimensionResource(
                                 id = R.dimen.spacing32
                             )
-                        )
-                        .verticalScroll(// TODO: Find a better way to trigger pull to refresh
-                            state = rememberScrollState()
                         ),
                     placeholder = {
-                        LoadingListPlaceholder()
+                        LoadingListPlaceholder(modifier = Modifier.fillMaxSize())
                     })
             } else {
                 state.error?.let {
@@ -79,13 +78,17 @@ fun ProximityRestaurantsBody(
                                 dimensionResource(
                                     id = R.dimen.spacing32
                                 )
-                            )
-                            .verticalScroll(// TODO: Find a better way to trigger pull to refresh
-                                state = rememberScrollState()
                             ),
                         placeholder = {
                             ErrorListPlaceholder(
-                                error = it.asString()
+                                modifier = Modifier.fillMaxSize(),
+                                error = it.asString(),
+                                onRetry = {
+                                    onEvent(
+                                        ProximityRestaurantsEvent
+                                            .OnManualRefreshProximityRestaurants
+                                    )
+                                }
                             )
                         })
                 }

@@ -1,21 +1,27 @@
 package io.github.chhabra_dhiraj.dineoutrec.presentation.proximityrestaurants
 
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.pulltorefresh.PullToRefreshBox
-import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
-import androidx.compose.material3.pulltorefresh.pullToRefresh
-import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.LayoutDirection
 import io.github.chhabra_dhiraj.dineoutrec.R
 import io.github.chhabra_dhiraj.dineoutrec.domain.model.NoVenueSection
 import io.github.chhabra_dhiraj.dineoutrec.domain.sampledata.getSampleRestaurantList
@@ -24,63 +30,65 @@ import io.github.chhabra_dhiraj.dineoutrec.presentation.proximityrestaurants.com
 import io.github.chhabra_dhiraj.dineoutrec.presentation.ui.theme.DineoutRecTheme
 import io.github.chhabra_dhiraj.dineoutrec.presentation.util.UiText
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProximityRestaurantsScreenUI(
     state: ProximityRestaurantsState,
     onEvent: (ProximityRestaurantsEvent) -> Unit
 ) {
-    val pullToRefreshState = rememberPullToRefreshState()
-    val onRefresh = {
-        onEvent(ProximityRestaurantsEvent.OnManualRefreshProximityRestaurants)
+    val proximityRestaurants = state.proximityRestaurants
+    val isFabShown = remember(proximityRestaurants) {
+        proximityRestaurants?.isNotEmpty() ?: false
     }
-    PullToRefreshBox(
-        isRefreshing = state.isLoading,
-        onRefresh = onRefresh,
-        state = pullToRefreshState,
-        indicator = {
-            Indicator(
-                modifier = Modifier
-                    .align(Alignment.TopCenter)
-                    .padding(
-                        top = dimensionResource(
-                            // TODO: Find a better way to space down pull to refresh
-                            id = R.dimen.spacing40
+    Scaffold(
+        modifier = Modifier
+            .fillMaxSize(),
+        topBar = {
+            TopAppBar(
+                title = {
+                    BasicScreenHeader(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        title = stringResource(id = R.string.app_name),
+                    )
+                })
+        },
+        floatingActionButton = {
+            if (isFabShown) {
+                FloatingActionButton(
+                    modifier = Modifier
+                        .padding(
+                            end = WindowInsets.systemBars.asPaddingValues()
+                                .calculateEndPadding(LayoutDirection.Ltr)
+                        ),
+                    onClick = {
+                        onEvent(
+                            ProximityRestaurantsEvent
+                                .OnManualRefreshProximityRestaurants
                         )
-                    ),
-                isRefreshing = state.isLoading,
-                state = pullToRefreshState
-            )
-        }
-    ) {
-        Scaffold(
-            modifier = Modifier
-                .fillMaxSize()
-                .pullToRefresh(
-                    state = rememberPullToRefreshState(),
-                    isRefreshing = state.isLoading,
-                    onRefresh = onRefresh,
-                    enabled = false
-                ),
-            topBar = {
-                TopAppBar(
-                    title = {
-                        BasicScreenHeader(
-                            modifier = Modifier
-                                .fillMaxWidth(),
-                            title = stringResource(id = R.string.app_name),
+                    },
+                    shape = RoundedCornerShape(
+                        dimensionResource(
+                            id = R.dimen.size_rounded_corner_shape
                         )
-                    })
+                    )
+                ) {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(
+                            id = R.drawable.baseline_refresh_24
+                        ),
+                        contentDescription = stringResource(R.string.cd_refresh_restaurant_list)
+                    )
+                }
             }
-        ) { contentPadding ->
-            ProximityRestaurantsBody(
-                modifier = Modifier
-                    .padding(contentPadding),
-                state = state,
-                onEvent = onEvent
-            )
         }
+    ) { contentPadding ->
+        ProximityRestaurantsBody(
+            modifier = Modifier
+                .padding(contentPadding),
+            state = state,
+            onEvent = onEvent
+        )
     }
 }
 
