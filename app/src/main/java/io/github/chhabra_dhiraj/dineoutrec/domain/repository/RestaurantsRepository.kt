@@ -12,9 +12,4 @@ interface RestaurantsRepository {
         longitude: Double
     ): Result<Section, DataError.Network>
 
-    suspend fun getFavouriteRestaurantsIds(): List<String>
-
-    suspend fun saveFavouriteRestaurantsId(id: String)
-
-    suspend fun removeFavouriteRestaurantsId(id: String)
 }

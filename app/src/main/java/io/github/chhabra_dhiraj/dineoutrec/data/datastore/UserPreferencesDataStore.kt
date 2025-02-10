@@ -10,8 +10,8 @@ import timber.log.Timber
 import javax.inject.Inject
 
 // TODO: Check if it makes sense to have an interface for this
-class RestaurantsDataStore @Inject constructor(
-    private val userPreferencesDataStore: DataStore<Preferences>
+class UserPreferencesDataStore @Inject constructor(
+    private val dataStore: DataStore<Preferences>
 ) {
     companion object {
         private const val ERROR_FETCHING_RESTAURANTS_USER_PREFERENCES =
@@ -26,7 +26,7 @@ class RestaurantsDataStore @Inject constructor(
 
     // TODO: Check if there is any better way than this
     suspend fun getFavouriteRestaurantsIds(): List<String> =
-        userPreferencesDataStore.data.map { preferences ->
+        dataStore.data.map { preferences ->
             preferences[FAVOURITE_RESTUARANTS] ?: emptySet()
         }.firstOrNull()?.toList() ?: run {
             // TODO: Check if there is a better way for this
@@ -40,7 +40,7 @@ class RestaurantsDataStore @Inject constructor(
 
 
     suspend fun saveFavouriteRestaurantsId(id: String) {
-        userPreferencesDataStore.edit { preferences ->
+        dataStore.edit { preferences ->
             // TODO: Check what is the right way to check if this operation was successful
             val currentList = preferences[FAVOURITE_RESTUARANTS]?.toMutableSet() ?: mutableSetOf()
             currentList.add(id)
@@ -50,7 +50,7 @@ class RestaurantsDataStore @Inject constructor(
     }
 
     suspend fun removeFavouriteRestaurantsId(id: String) {
-        userPreferencesDataStore.edit { preferences ->
+        dataStore.edit { preferences ->
             // TODO: Check what is the right way to check if this operation was successful
             val currentList = preferences[FAVOURITE_RESTUARANTS]?.toMutableSet() ?: return@edit
             currentList.remove(id)

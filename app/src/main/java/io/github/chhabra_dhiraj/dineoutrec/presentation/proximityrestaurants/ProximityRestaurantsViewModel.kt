@@ -7,6 +7,7 @@ import io.github.chhabra_dhiraj.dineoutrec.domain.location.LocationData
 import io.github.chhabra_dhiraj.dineoutrec.domain.model.NoVenueSection
 import io.github.chhabra_dhiraj.dineoutrec.domain.model.VenueSection
 import io.github.chhabra_dhiraj.dineoutrec.domain.repository.RestaurantsRepository
+import io.github.chhabra_dhiraj.dineoutrec.domain.repository.UserPreferencesRepository
 import io.github.chhabra_dhiraj.dineoutrec.domain.util.Result
 import io.github.chhabra_dhiraj.dineoutrec.presentation.util.asErrorUiText
 import kotlinx.coroutines.delay
@@ -21,7 +22,8 @@ private const val LOCATION_UPDATE_TIME_SECONDS = LocationData.LOCATION_UPDATE_TI
 
 @HiltViewModel
 class ProximityRestaurantsViewModel @Inject constructor(
-    private val restaurantsRepository: RestaurantsRepository
+    private val restaurantsRepository: RestaurantsRepository,
+    private val userPreferencesRepository: UserPreferencesRepository
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(ProximityRestaurantsState())
@@ -66,10 +68,17 @@ class ProximityRestaurantsViewModel @Inject constructor(
         ) {
             is Result.Success -> {
                 _state.update {
-                    when (result.data) {
+                    when (val section = result.data) {
                         is VenueSection -> {
+                            val favouriteRestaurantsIds =
+                                userPreferencesRepository.getFavouriteRestaurantsIds()
+                            val venueItems = section.items.map { venueItem ->
+                                venueItem.copy(
+                                    isFavourite = venueItem.venue.id in favouriteRestaurantsIds
+                                )
+                            }
                             it.copy(
-                                proximityRestaurants = result.data.items,
+                                proximityRestaurants = venueItems,
                                 noVenueSection = null,
                                 isLoading = false,
                                 error = null
@@ -79,7 +88,7 @@ class ProximityRestaurantsViewModel @Inject constructor(
                         is NoVenueSection -> {
                             it.copy(
                                 proximityRestaurants = emptyList(), // TODO: find a better way
-                                noVenueSection = result.data,
+                                noVenueSection = section,
                                 isLoading = false,
                                 error = null
                             )
@@ -113,9 +122,9 @@ class ProximityRestaurantsViewModel @Inject constructor(
                 viewModelScope.launch {
                     val id = event.id
                     if (event.isAlreadyFavourite) {
-                        restaurantsRepository.removeFavouriteRestaurantsId(id)
+                        userPreferencesRepository.removeFavouriteRestaurantsId(id)
                     } else {
-                        restaurantsRepository.saveFavouriteRestaurantsId(id)
+                        userPreferencesRepository.saveFavouriteRestaurantsId(id)
                     }
 
                     updateFavourite(
