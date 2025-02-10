@@ -1,6 +1,5 @@
-package io.github.chhabra_dhiraj.dineoutrec.ui.theme
+package io.github.chhabra_dhiraj.dineoutrec.presentation.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme

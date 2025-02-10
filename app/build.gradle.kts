@@ -39,6 +39,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -76,6 +77,9 @@ dependencies {
 
     // Logging with Timber
     implementation(libs.timber)
+
+    // DataStore
+    implementation(libs.androidx.datastore.preferences)
 
     // Tests
     testImplementation(libs.junit)

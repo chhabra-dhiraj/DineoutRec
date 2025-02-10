@@ -26,6 +26,9 @@ coilCompose = "2.4.0"
 #Logging with Timber
 timber = "5.0.1"
 
+#DataStore
+datastorePreferences = "1.1.2"
+
 #Tests
 kotlinxCoroutinesTest = "1.7.3"
 mockitoCore = "3.9.0"
@@ -66,8 +69,12 @@ kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serializa
 #Coil Compose
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
 
+
 #Logging with Timber
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
+
+#DataStore
+androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
 
 #Tests
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
@@ -96,5 +103,3 @@ google-dagger-hilt-android = { id = "com.google.dagger.hilt.android", version.re
 
 #Kotlinx Serialiazation
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinxSerialization" }
-
-

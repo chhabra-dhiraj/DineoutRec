@@ -1,4 +1,4 @@
-package io.github.chhabra_dhiraj.dineoutrec.ui.theme
+package io.github.chhabra_dhiraj.dineoutrec.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
