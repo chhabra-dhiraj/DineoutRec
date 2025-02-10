@@ -14,7 +14,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 // TODO: Check if this is the right way
@@ -32,8 +31,6 @@ class ProximityRestaurantsViewModel @Inject constructor(
     private var currentTime = 0 // In seconds
     private var currentLocationIndex = 0
     private val locations = LocationData.locations
-    // TODO: Remove this var. Just for testing purpose
-    var numTimesUpdated = 0
 
     init {
         viewModelScope.launch {
@@ -48,7 +45,6 @@ class ProximityRestaurantsViewModel @Inject constructor(
         while (true) {
             delay(1000) // TODO: Check if to be made a constant
             currentTime++
-            Timber.e("war: currentTime - $currentTime")
             viewModelScope.launch {
                 if (currentTime % LOCATION_UPDATE_TIME_SECONDS == 0) {
                     loadVenueItems()
@@ -62,8 +58,6 @@ class ProximityRestaurantsViewModel @Inject constructor(
         currentLocationIndex =
             ((currentTime / LOCATION_UPDATE_TIME_SECONDS) % locations.size)
         val currentLocation = locations[currentLocationIndex]
-        Timber.e("war: currentLocationIndex - $currentLocationIndex")
-        Timber.e("war: currentLocationIndex currentLocation - $currentLocation")
         when (
             val result = restaurantsRepository.getVenueSection(
                 latitude = currentLocation.latitude,
@@ -105,8 +99,6 @@ class ProximityRestaurantsViewModel @Inject constructor(
                 }
             }
         }
-        numTimesUpdated++
-        Timber.e("war: numTimesUpdated - $numTimesUpdated")
     }
 
     fun onEvent(event: ProximityRestaurantsEvent) {
@@ -122,36 +114,30 @@ class ProximityRestaurantsViewModel @Inject constructor(
                     val id = event.id
                     if (event.isAlreadyFavourite) {
                         restaurantsRepository.removeFavouriteRestaurantsId(id)
-                        updateFavourite(
-                            id = id,
-                            isFavourite = false
-                        )
                     } else {
                         restaurantsRepository.saveFavouriteRestaurantsId(id)
-                        updateFavourite(
-                            id = id,
-                            isFavourite = true
-                        )
                     }
+
+                    updateFavourite(
+                        id = id,
+                        isFavourite = !event.isAlreadyFavourite
+                    )
                 }
             }
         }
     }
 
     private fun updateFavourite(id: String, isFavourite: Boolean) {
+        // TODO: Check if this is the right way, and what happens in refresh cases
         _state.update { state ->
-            var favouriteChangeId: String? = null
-            state.proximityRestaurants?.let { venues ->
-                // TODO: Check if this is the right way, and what happens in refresh cases
-                venues.find {
-                    id == it.venue.id
-                }?.let {
-                    it.isFavourite = isFavourite
-                    favouriteChangeId = it.venue.id
-                }
-            }
             state.copy(
-                favouriteChangeId = favouriteChangeId
+                proximityRestaurants = state.proximityRestaurants?.map { venueItem ->
+                    if (id == venueItem.venue.id) {
+                        venueItem.copy(isFavourite = isFavourite)
+                    } else {
+                        venueItem
+                    }
+                }
             )
         }
     }

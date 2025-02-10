@@ -35,7 +35,6 @@ import io.github.chhabra_dhiraj.dineoutrec.presentation.ui.theme.DineoutRecTheme
 fun ProximityRestaurantListItem(
     modifier: Modifier = Modifier,
     restaurant: VenueItem,
-    isFavouriteChange: Boolean = false,
     onEvent: (ProximityRestaurantsEvent) -> Unit,
     isLastItem: Boolean
 ) {
@@ -118,6 +117,7 @@ fun ProximityRestaurantListItem(
                     style = MaterialTheme.typography.labelLarge
                 )
             }
+            val isFavourite = restaurant.isFavourite
             Image(
                 modifier = Modifier
                     .padding(
@@ -134,8 +134,8 @@ fun ProximityRestaurantListItem(
                         )
                     },
                 imageVector = ImageVector.vectorResource(
-                    id = remember(restaurant.isFavourite) {
-                        if (restaurant.isFavourite) {
+                    id = remember(isFavourite) {
+                        if (isFavourite) {
                             R.drawable.baseline_favorite_24
                         } else {
                             R.drawable.baseline_favorite_border_24
@@ -161,7 +161,6 @@ private fun FavouriteProximityRestaurantListItem_Preview() {
     DineoutRecTheme {
         ProximityRestaurantListItem(
             restaurant = getSampleRestaurantList()[0],
-            isFavouriteChange = false,
             onEvent = {},
             isLastItem = false
         )
@@ -175,7 +174,6 @@ private fun NonFavouriteProximityRestaurantListItem_Preview() {
     DineoutRecTheme {
         ProximityRestaurantListItem(
             restaurant = getSampleRestaurantList()[14],
-            isFavouriteChange = false,
             onEvent = {},
             isLastItem = false
         )

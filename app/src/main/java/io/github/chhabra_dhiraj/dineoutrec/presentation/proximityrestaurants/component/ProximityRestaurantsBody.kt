@@ -32,7 +32,6 @@ fun ProximityRestaurantsBody(
             if (restaurants.isNotEmpty()) {
                 ProximityRestaurantList(
                     restaurants = restaurants,
-                    favouriteChangeId = state.favouriteChangeId,
                     onEvent = onEvent
                 )
             } else {

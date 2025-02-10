@@ -16,7 +16,6 @@ import io.github.chhabra_dhiraj.dineoutrec.presentation.ui.theme.DineoutRecTheme
 @Composable
 fun ProximityRestaurantList(
     restaurants: List<VenueItem>,
-    favouriteChangeId: String?,
     onEvent: (ProximityRestaurantsEvent) -> Unit
 ) {
     LazyColumn(
@@ -45,7 +44,6 @@ fun ProximityRestaurantList(
         ) { index, restaurant ->
             ProximityRestaurantListItem(
                 restaurant = restaurant,
-                isFavouriteChange = restaurant.venue.id == favouriteChangeId,
                 isLastItem = (index == restaurants.lastIndex),
                 onEvent = onEvent
             )
@@ -59,7 +57,6 @@ private fun ProximityRestaurantList_Preview() {
     DineoutRecTheme {
         ProximityRestaurantList(
             restaurants = getSampleRestaurantList(),
-            favouriteChangeId = null,
             onEvent = { }
         )
     }
