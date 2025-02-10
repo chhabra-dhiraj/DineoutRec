@@ -3,12 +3,14 @@ package io.github.chhabra_dhiraj.dineoutrec.presentation.component
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment.Companion.Center
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
@@ -28,8 +30,7 @@ fun ListPlaceholder(
     placeholder: @Composable () -> Unit
 ) {
     Box(
-        modifier = modifier,
-        contentAlignment = Center
+        modifier = modifier
     ) {
         placeholder()
     }
@@ -39,27 +40,48 @@ fun ListPlaceholder(
 fun EmptyListPlaceholder(
     modifier: Modifier = Modifier,
     title: String,
-    subtitle: String
+    subtitle: String,
+    onRetry: () -> Unit
 ) {
-    Column(modifier = modifier) {
-        Text(
-            text = title,
-            color = MaterialTheme.colorScheme.primary,
-            style = MaterialTheme.typography.titleMedium
-        )
-        Text(
-            modifier = Modifier
-                .padding(
-                    top = dimensionResource(
-                        id = R.dimen.spacing8
-                    )
+    Box(modifier = modifier) {
+        Column(
+            modifier = Modifier.align(Alignment.Center),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = title,
+                color = MaterialTheme.colorScheme.primary,
+                style = MaterialTheme.typography.titleMedium
+            )
+            Text(
+                modifier = Modifier
+                    .padding(
+                        top = dimensionResource(
+                            id = R.dimen.spacing8
+                        )
+                    ),
+                text = subtitle,
+                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                    alpha = 0.6f
                 ),
-            text = subtitle,
-            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                alpha = 0.6f
-            ),
-            style = MaterialTheme.typography.labelLarge
-        )
+                style = MaterialTheme.typography.labelLarge
+            )
+        }
+
+        Button(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.BottomCenter),
+            onClick = {
+                onRetry.invoke()
+            }
+        ) {
+            Text(
+                text = stringResource(
+                    id = R.string.btn_try_again
+                )
+            )
+        }
     }
 }
 
@@ -69,6 +91,7 @@ fun LoadingListPlaceholder(
 ) {
     Box(modifier = modifier) {
         CircularProgressIndicator(
+            modifier = Modifier.align(Alignment.Center),
             color = MaterialTheme.colorScheme.primary
         )
     }
@@ -77,14 +100,31 @@ fun LoadingListPlaceholder(
 @Composable
 fun ErrorListPlaceholder(
     modifier: Modifier = Modifier,
-    error: String
+    error: String,
+    onRetry: () -> Unit
 ) {
     Box(modifier = modifier) {
         Text(
+            modifier = Modifier.align(Alignment.Center),
             text = error,
             color = MaterialTheme.colorScheme.error,
             style = MaterialTheme.typography.titleMedium
         )
+
+        Button(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.BottomCenter),
+            onClick = {
+                onRetry.invoke()
+            }
+        ) {
+            Text(
+                text = stringResource(
+                    id = R.string.btn_try_again
+                )
+            )
+        }
     }
 }
 
@@ -103,8 +143,10 @@ private fun EmptyListPlaceholder_Preview() {
                 ),
         ) {
             EmptyListPlaceholder(
+                modifier = Modifier.fillMaxSize(),
                 title = "title",
-                subtitle = "subtitle"
+                subtitle = "subtitle",
+                onRetry = {}
             )
         }
     }
@@ -124,7 +166,7 @@ private fun LoadingListPlaceholder_Preview() {
                     )
                 ),
         ) {
-            LoadingListPlaceholder()
+            LoadingListPlaceholder(modifier = Modifier.fillMaxSize())
         }
     }
 }
@@ -144,7 +186,9 @@ private fun ErrorListPlaceholder_Preview() {
                 ),
         ) {
             ErrorListPlaceholder(
-                error = stringResource(id = R.string.str_error_unknown)
+                modifier = Modifier.fillMaxSize(),
+                error = stringResource(id = R.string.str_error_unknown),
+                onRetry = {}
             )
         }
     }

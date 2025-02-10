@@ -41,7 +41,8 @@ class RestaurantsRepositoryImpl @Inject constructor(
 
             val section = venueSectionDto?.let {
                 val favouriteRestaurantsIds = getFavouriteRestaurantsIds()
-                val venueItems = it.items.map { venueItemDto ->
+
+                val venueItems = it.getVenueItemDtos().map { venueItemDto ->
                     val isFavourite = if (favouriteRestaurantsIds.isNotEmpty()) {
                         venueItemDto.venue.id in favouriteRestaurantsIds
                     } else {

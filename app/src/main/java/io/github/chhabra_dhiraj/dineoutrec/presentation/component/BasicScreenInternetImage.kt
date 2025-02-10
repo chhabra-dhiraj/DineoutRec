@@ -20,7 +20,7 @@ import io.github.chhabra_dhiraj.dineoutrec.presentation.ui.theme.DineoutRecTheme
 fun BasicScreenInternetImage(
     modifier: Modifier = Modifier,
     imageUrl: String,
-    @DrawableRes errorDrawableId: Int = R.drawable.baseline_broken_image_24,
+    @DrawableRes errorDrawableResId: Int = R.drawable.baseline_broken_image_24,
     contentScale: ContentScale = ContentScale.Fit
 ) {
     SubcomposeAsyncImage(
@@ -36,7 +36,7 @@ fun BasicScreenInternetImage(
         error = {
             Image(
                 imageVector = ImageVector.vectorResource(
-                    id = errorDrawableId
+                    id = errorDrawableResId
                 ),
                 contentDescription = null // TODO: add this
             )
