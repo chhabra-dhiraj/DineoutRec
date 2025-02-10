@@ -1,13 +1,37 @@
 # DineoutRec
 An Android application for Restaurant Venues near a particular location
 
+## Setup and Installation
+
+Follow the steps below to run the project. 
+
+1. Open the unzipped project in Android Studio
+```
+$ File > Open > Select the unzipped project directory
+```
+2. Read the entire README.md and follow the instructions
+```
+$ The README.md also contains important information and details of the project and structure
+```
+3. Sync the project with Gradle:
+```
+$ Android Studio will prompt you to sync. Ensure all dependencies are downloaded.
+  Make sure to use the same dependencies' versions
+```
+4. Run the app on an emulator or a physical device:
+```
+$ Turn on the USB Debugging and connect the Android device using a USB cable. 
+  Alternatively, in the case of Android 11+, Wireless Debugging could be used as well.
+  Click on the green play button or press `Shift + F10`.
+```
+
 ## Overview
 This project displays the list of Restaurant Venues near a particular location from the [Wolt Restaurants API](https://restaurant-api.wolt.com/)
 
-API endpoints used:
+## API endpoints used:
 - [https://restaurant-api.wolt.com/v1/pages/restaurants?lat=[LAT_VALUE]&lon=[LONG_VALUE]](https://restaurant-api.wolt.com/v1/pages/restaurants?lat=60.170187&lon=24.930599)
 
-Important information:
+## Important information:
  1. 'lat' query param representing the latitude coordinate of the location
  2. 'lon' query param representing the latitude coordinate of the location
  3. API used to show restaurant venues contains 4 sections having a common field 'template' which is used as the class discriminator from api response
@@ -35,30 +59,6 @@ Important information:
 ## 🚀 Technology Used
 
 * DineoutRec is built using Kotlin and Native Android
-
-## Setup and Installation
-
-Follow the steps below to run the project. 
-
-1. Download the zip file from the following link
-```
-$ Paste the link here
-```
-2. Open the unzipped project in Android Studio
-```
-$ File > Open > Select the unzipped project directory
-```
-3. Sync the project with Gradle:
-```
-$ Android Studio will prompt you to sync. Ensure all dependencies are downloaded.
-  Make sure to use the same dependencies' versions
-```
-4. Run the app on an emulator or a physical device:
-```
-$ Turn on the USB Debugging and connect the Android device using a USB cable. 
-  Alternatively, in the case of Android 11+, Wireless Debugging could be used as well.
-  Click on the green play button or press `Shift + F10`.
-```
 
 ## Architecture
 
