@@ -4,7 +4,7 @@ import io.github.chhabra_dhiraj.dineoutrec.domain.model.Venue
 import io.github.chhabra_dhiraj.dineoutrec.domain.model.VenueImage
 import io.github.chhabra_dhiraj.dineoutrec.domain.model.VenueItem
 
-// Sample data (mainly for debugging, previews or tests)
+// Sample data (mainly for debugging, previews or tests) (To exclude from the source sets)
 fun getSampleRestaurantList() = listOf(
     VenueItem(
         image = VenueImage(
