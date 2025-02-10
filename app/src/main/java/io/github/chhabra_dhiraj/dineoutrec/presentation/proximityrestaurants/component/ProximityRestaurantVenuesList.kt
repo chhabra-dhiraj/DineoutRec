@@ -17,14 +17,14 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import io.github.chhabra_dhiraj.dineoutrec.R
 import io.github.chhabra_dhiraj.dineoutrec.domain.model.VenueItem
-import io.github.chhabra_dhiraj.dineoutrec.domain.sampledata.getSampleRestaurantList
-import io.github.chhabra_dhiraj.dineoutrec.presentation.proximityrestaurants.ProximityRestaurantsEvent
+import io.github.chhabra_dhiraj.dineoutrec.domain.sample.getSampleRestaurantList
+import io.github.chhabra_dhiraj.dineoutrec.presentation.proximityrestaurants.ProximityRestaurantVenuesEvent
 import io.github.chhabra_dhiraj.dineoutrec.presentation.ui.theme.DineoutRecTheme
 
 @Composable
-fun ProximityRestaurantList(
-    restaurants: List<VenueItem>,
-    onEvent: (ProximityRestaurantsEvent) -> Unit
+fun ProximityRestaurantVenuesList(
+    restaurantVenuesList: List<VenueItem>,
+    onEvent: (ProximityRestaurantVenuesEvent) -> Unit
 ) {
     var isVisible by remember {
         mutableStateOf(false)
@@ -60,14 +60,14 @@ fun ProximityRestaurantList(
             )
         ) {
             itemsIndexed(
-                items = restaurants,
-                key = { _, restaurant ->
-                    restaurant.venue.id
+                items = restaurantVenuesList,
+                key = { _, restaurantVenueItem ->
+                    restaurantVenueItem.venue.id
                 }
             ) { index, restaurant ->
-                ProximityRestaurantListItem(
-                    restaurant = restaurant,
-                    isLastItem = (index == restaurants.lastIndex),
+                ProximityRestaurantVenuesListItem(
+                    restaurantVenueItem = restaurant,
+                    isLastItem = (index == restaurantVenuesList.lastIndex),
                     onEvent = onEvent
                 )
             }
@@ -77,10 +77,10 @@ fun ProximityRestaurantList(
 
 @Preview(showBackground = true)
 @Composable
-private fun ProximityRestaurantList_Preview() {
+private fun ProximityRestaurantVenuesList_Preview() {
     DineoutRecTheme {
-        ProximityRestaurantList(
-            restaurants = getSampleRestaurantList(),
+        ProximityRestaurantVenuesList(
+            restaurantVenuesList = getSampleRestaurantList(),
             onEvent = { }
         )
     }

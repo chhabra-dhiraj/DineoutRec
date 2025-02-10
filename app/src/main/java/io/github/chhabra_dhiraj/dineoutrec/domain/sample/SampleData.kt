@@ -1,13 +1,10 @@
-package io.github.chhabra_dhiraj.dineoutrec.domain.sampledata
+package io.github.chhabra_dhiraj.dineoutrec.domain.sample
 
 import io.github.chhabra_dhiraj.dineoutrec.domain.model.Venue
 import io.github.chhabra_dhiraj.dineoutrec.domain.model.VenueImage
 import io.github.chhabra_dhiraj.dineoutrec.domain.model.VenueItem
 
-// TODO: To check if this is to be kept here or in some test classes, as this would increase the
-//  app size
-// TODO: Revisit this comment
-/** Sample data (mainly for debugging, previews or tests) */
+// Sample data (mainly for debugging, previews or tests)
 fun getSampleRestaurantList() = listOf(
     VenueItem(
         image = VenueImage(

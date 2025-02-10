@@ -10,8 +10,9 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import io.github.chhabra_dhiraj.dineoutrec.data.mapper.SECTION_CLASS_DISCRIMINATOR
+import io.github.chhabra_dhiraj.dineoutrec.BuildConfig
 import io.github.chhabra_dhiraj.dineoutrec.data.remote.RestaurantsApi
+import io.github.chhabra_dhiraj.dineoutrec.data.util.RestaurantsInfoMapperConstants.SECTION_CLASS_DISCRIMINATOR
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -20,7 +21,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import retrofit2.create
 import javax.inject.Singleton
-
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -31,14 +31,19 @@ object AppModule {
     private const val BASE_URL = "https://restaurant-api.wolt.com/$WEB_API_VERSION/"
     private const val DEFAULT_MEDIA_TYPE = "application/json; charset=UTF8"
 
-    // For Data Store
-    private const val USER_PREFERENCES = "user_preferences" // TODO: Check if better name poss.
+    // For Data Store User Preferences
+    private const val USER_PREFERENCES_DATA_STORE = "user_preferences"
 
     @Provides
     @Singleton
     fun provideRestaurantsApi(): RestaurantsApi {
-        // TODO: Check if this is fine for production
-        val interceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+        val interceptor = HttpLoggingInterceptor().apply {
+            level = if (BuildConfig.DEBUG) {
+                HttpLoggingInterceptor.Level.BODY
+            } else {
+                HttpLoggingInterceptor.Level.NONE
+            }
+        }
         val client = OkHttpClient.Builder().addInterceptor(interceptor).build()
         val networkJson = Json {
             ignoreUnknownKeys = true
@@ -60,6 +65,6 @@ object AppModule {
     fun providePreferencesDataStore(
         @ApplicationContext appContext: Context
     ): DataStore<Preferences> = PreferenceDataStoreFactory.create(
-        produceFile = { appContext.preferencesDataStoreFile(USER_PREFERENCES) }
+        produceFile = { appContext.preferencesDataStoreFile(USER_PREFERENCES_DATA_STORE) }
     )
 }

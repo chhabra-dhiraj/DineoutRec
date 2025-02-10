@@ -1,16 +1,17 @@
-package io.github.chhabra_dhiraj.dineoutrec.sampledata
+package io.github.chhabra_dhiraj.dineoutrec.data.sampledata
 
-import io.github.chhabra_dhiraj.dineoutrec.data.remote.NoVenueSectionDto
-import io.github.chhabra_dhiraj.dineoutrec.data.remote.RestaurantsDto
+import io.github.chhabra_dhiraj.dineoutrec.data.remote.RestaurantsInfoDto
+import io.github.chhabra_dhiraj.dineoutrec.data.remote.SectionDto
 import io.github.chhabra_dhiraj.dineoutrec.data.remote.VenueDto
 import io.github.chhabra_dhiraj.dineoutrec.data.remote.VenueImageDto
 import io.github.chhabra_dhiraj.dineoutrec.data.remote.VenueItemDto
-import io.github.chhabra_dhiraj.dineoutrec.data.remote.VenueSectionDto
+import io.github.chhabra_dhiraj.dineoutrec.domain.model.Section
 
-fun getRestaurantsDtoWithVenueSectionDto() = RestaurantsDto(
+fun getRestaurantsDtoWithVenueSectionDto() = RestaurantsInfoDto(
     sections = listOf(
-        VenueSectionDto(
+        SectionDto.VenueSectionDto(
             title = "All restaurants",
+            template = Section.Companion.TEMPLATE.VENUE_SECTION.value,
             items = listOf(
                 VenueItemDto(
                     image = VenueImageDto(
@@ -34,18 +35,20 @@ fun getRestaurantsDtoWithVenueSectionDto() = RestaurantsDto(
                 )
             )
         ),
-        NoVenueSectionDto(
+        SectionDto.NoVenueSectionDto(
             title = "There aren’t any restaurants on Wolt near you yet",
+            template = Section.Companion.TEMPLATE.NO_VENUE_SECTION.value,
             description = "It’s not you, it’s us! We’re working hard to expand " +
                     "and hope to come to your area soon"
         )
     )
 )
 
-fun getRestaurantsDtoWithoutVenueSectionDto() = RestaurantsDto(
+fun getRestaurantsDtoWithoutVenueSectionDto() = RestaurantsInfoDto(
     sections = listOf(
-        NoVenueSectionDto(
+        SectionDto.NoVenueSectionDto(
             title = "There aren’t any restaurants on Wolt near you yet",
+            template = Section.Companion.TEMPLATE.NO_VENUE_SECTION.value,
             description = "It’s not you, it’s us! We’re working hard to expand " +
                     "and hope to come to your area soon"
         )

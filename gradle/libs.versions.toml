@@ -103,5 +103,3 @@ google-dagger-hilt-android = { id = "com.google.dagger.hilt.android", version.re
 
 #Kotlinx Serialiazation
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinxSerialization" }
-
-

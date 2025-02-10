@@ -2,17 +2,15 @@ package io.github.chhabra_dhiraj.dineoutrec.data.repository
 
 import io.github.chhabra_dhiraj.dineoutrec.data.mapper.toNoVenueSection
 import io.github.chhabra_dhiraj.dineoutrec.data.mapper.toVenueSection
-import io.github.chhabra_dhiraj.dineoutrec.data.remote.NoVenueSectionDto
 import io.github.chhabra_dhiraj.dineoutrec.data.remote.RestaurantsApi
-import io.github.chhabra_dhiraj.dineoutrec.data.remote.VenueSectionDto
+import io.github.chhabra_dhiraj.dineoutrec.data.remote.SectionDto
+import io.github.chhabra_dhiraj.dineoutrec.data.sampledata.getRestaurantsDtoWithVenueSectionDto
+import io.github.chhabra_dhiraj.dineoutrec.data.sampledata.getRestaurantsDtoWithoutVenueSectionDto
 import io.github.chhabra_dhiraj.dineoutrec.domain.location.LocationData
-import io.github.chhabra_dhiraj.dineoutrec.domain.model.NoVenueSection
-import io.github.chhabra_dhiraj.dineoutrec.domain.model.VenueSection
+import io.github.chhabra_dhiraj.dineoutrec.domain.model.Section
 import io.github.chhabra_dhiraj.dineoutrec.domain.repository.RestaurantsRepository
 import io.github.chhabra_dhiraj.dineoutrec.domain.util.DataError
 import io.github.chhabra_dhiraj.dineoutrec.domain.util.Result
-import io.github.chhabra_dhiraj.dineoutrec.sampledata.getRestaurantsDtoWithVenueSectionDto
-import io.github.chhabra_dhiraj.dineoutrec.sampledata.getRestaurantsDtoWithoutVenueSectionDto
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
@@ -36,9 +34,9 @@ class RestaurantsRepositoryImplTest {
     fun `Venue Section Success`() = runBlocking {
         val restaurantsDto = getRestaurantsDtoWithVenueSectionDto()
 
-        val location = LocationData.locations[0]
+        val location = LocationData.getLocationList()[0]
         `when`(
-            restaurantsApi.getRestaurants(
+            restaurantsApi.getRestaurantsInfo(
                 latitude = location.latitude,
                 longitude = location.longitude
             )
@@ -46,23 +44,23 @@ class RestaurantsRepositoryImplTest {
             restaurantsDto
         )
 
-        val result = restaurantsRepository.getVenueSection(
+        val result = restaurantsRepository.getRestaurantsVenueSection(
             latitude = location.latitude,
             longitude = location.longitude
         )
         val venueSection = (restaurantsDto.sections.first {
-            it is VenueSectionDto
-        } as VenueSectionDto).toVenueSection()
-        assert(((result as? Result.Success)?.data as? VenueSection) == venueSection)
+            it is SectionDto.VenueSectionDto
+        } as SectionDto.VenueSectionDto).toVenueSection()
+        assert(((result as? Result.Success)?.data as? Section.VenueSection) == venueSection)
     }
 
     @Test
     fun `No Venue Section Success`() = runBlocking {
         val restaurantsDto = getRestaurantsDtoWithoutVenueSectionDto()
 
-        val location = LocationData.locations[0]
+        val location = LocationData.getLocationList()[0]
         `when`(
-            restaurantsApi.getRestaurants(
+            restaurantsApi.getRestaurantsInfo(
                 latitude = location.latitude,
                 longitude = location.longitude
             )
@@ -70,30 +68,30 @@ class RestaurantsRepositoryImplTest {
             restaurantsDto
         )
 
-        val result = restaurantsRepository.getVenueSection(
+        val result = restaurantsRepository.getRestaurantsVenueSection(
             latitude = location.latitude,
             longitude = location.longitude
         )
 
         val noVenueSection = (restaurantsDto.sections.first { sectionDto ->
-            sectionDto is NoVenueSectionDto
-        } as NoVenueSectionDto).toNoVenueSection()
-        assert(((result as? Result.Success)?.data as? NoVenueSection) == noVenueSection)
+            sectionDto is SectionDto.NoVenueSectionDto
+        } as SectionDto.NoVenueSectionDto).toNoVenueSection()
+        assert(((result as? Result.Success)?.data as? Section.NoVenueSection) == noVenueSection)
     }
 
     @Test
     fun `Section Error`() = runBlocking {
         val exception = mock(HttpException::class.java)
-        val location = LocationData.locations[0]
+        val location = LocationData.getLocationList()[0]
 
         `when`(
-            restaurantsApi.getRestaurants(
+            restaurantsApi.getRestaurantsInfo(
                 latitude = location.latitude,
                 longitude = location.longitude
             )
         ).thenThrow(exception)
 
-        val result = restaurantsRepository.getVenueSection(
+        val result = restaurantsRepository.getRestaurantsVenueSection(
             latitude = location.latitude,
             longitude = location.longitude
         )
@@ -103,17 +101,17 @@ class RestaurantsRepositoryImplTest {
     @Test
     fun `Section Error - Request Timeout`() = runBlocking {
         val httpException = mock(HttpException::class.java)
-        val location = LocationData.locations[0]
+        val location = LocationData.getLocationList()[0]
 
         `when`(httpException.code()).thenReturn(408)
         `when`(
-            restaurantsApi.getRestaurants(
+            restaurantsApi.getRestaurantsInfo(
                 latitude = location.latitude,
                 longitude = location.longitude
             )
         ).thenThrow(httpException)
 
-        val result = restaurantsRepository.getVenueSection(
+        val result = restaurantsRepository.getRestaurantsVenueSection(
             latitude = location.latitude,
             longitude = location.longitude
         )
@@ -123,17 +121,17 @@ class RestaurantsRepositoryImplTest {
     @Test
     fun `Section Error - Unknown Error`() = runBlocking {
         val httpException = mock(HttpException::class.java)
-        val location = LocationData.locations[0]
+        val location = LocationData.getLocationList()[0]
 
         `when`(httpException.code()).thenReturn(409)
         `when`(
-            restaurantsApi.getRestaurants(
+            restaurantsApi.getRestaurantsInfo(
                 latitude = location.latitude,
                 longitude = location.longitude
             )
         ).thenThrow(httpException)
 
-        val result = restaurantsRepository.getVenueSection(
+        val result = restaurantsRepository.getRestaurantsVenueSection(
             latitude = location.latitude,
             longitude = location.longitude
         )

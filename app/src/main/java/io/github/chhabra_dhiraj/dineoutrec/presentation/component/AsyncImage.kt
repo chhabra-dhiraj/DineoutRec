@@ -15,18 +15,19 @@ import coil.compose.SubcomposeAsyncImage
 import io.github.chhabra_dhiraj.dineoutrec.R
 import io.github.chhabra_dhiraj.dineoutrec.presentation.ui.theme.DineoutRecTheme
 
-// TODO: Rename to a better name
 @Composable
-fun BasicScreenInternetImage(
+fun BasicAsyncImage(
     modifier: Modifier = Modifier,
     imageUrl: String,
     @DrawableRes errorDrawableResId: Int = R.drawable.baseline_broken_image_24,
-    contentScale: ContentScale = ContentScale.Fit
+    contentScale: ContentScale = ContentScale.Fit,
+    contentDescription: String? = null,
+    errorContentDescription: String? = null
 ) {
     SubcomposeAsyncImage(
         modifier = modifier,
         model = imageUrl,
-        contentDescription = null,
+        contentDescription = contentDescription,
         loading = {
             CircularProgressIndicator(
                 color = MaterialTheme.colorScheme.primary,
@@ -38,7 +39,7 @@ fun BasicScreenInternetImage(
                 imageVector = ImageVector.vectorResource(
                     id = errorDrawableResId
                 ),
-                contentDescription = null // TODO: add this
+                contentDescription = errorContentDescription
             )
         },
         contentScale = contentScale
@@ -47,9 +48,9 @@ fun BasicScreenInternetImage(
 
 @Preview(showBackground = true)
 @Composable
-private fun BasicScreenInternetImage_Preview() {
+private fun BasicAsyncImage_Preview() {
     DineoutRecTheme {
-        BasicScreenInternetImage(
+        BasicAsyncImage(
             imageUrl = "https://imageproxy.wolt.com/assets/673208c8479a971266a698b3"
         )
     }

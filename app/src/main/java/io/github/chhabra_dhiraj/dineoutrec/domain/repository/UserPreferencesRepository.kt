@@ -2,9 +2,9 @@ package io.github.chhabra_dhiraj.dineoutrec.domain.repository
 
 interface UserPreferencesRepository {
 
-    suspend fun getFavouriteRestaurantsIds(): List<String>
+    suspend fun getFavouriteRestaurantVenueIds(): List<String>
 
-    suspend fun saveFavouriteRestaurantsId(id: String)
+    suspend fun saveFavouriteRestaurantVenueId(id: String)
 
-    suspend fun removeFavouriteRestaurantsId(id: String)
+    suspend fun removeFavouriteRestaurantVenueId(id: String)
 }

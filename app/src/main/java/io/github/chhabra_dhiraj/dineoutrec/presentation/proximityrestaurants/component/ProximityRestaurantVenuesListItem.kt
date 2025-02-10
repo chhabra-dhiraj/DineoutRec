@@ -1,6 +1,5 @@
 package io.github.chhabra_dhiraj.dineoutrec.presentation.proximityrestaurants.component
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,6 +10,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,27 +21,28 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import io.github.chhabra_dhiraj.dineoutrec.R
 import io.github.chhabra_dhiraj.dineoutrec.domain.model.VenueItem
-import io.github.chhabra_dhiraj.dineoutrec.domain.sampledata.getSampleRestaurantList
-import io.github.chhabra_dhiraj.dineoutrec.presentation.component.BasicScreenInternetImage
-import io.github.chhabra_dhiraj.dineoutrec.presentation.proximityrestaurants.ProximityRestaurantsEvent
+import io.github.chhabra_dhiraj.dineoutrec.domain.sample.getSampleRestaurantList
+import io.github.chhabra_dhiraj.dineoutrec.presentation.component.BasicAsyncImage
+import io.github.chhabra_dhiraj.dineoutrec.presentation.proximityrestaurants.ProximityRestaurantVenuesEvent
 import io.github.chhabra_dhiraj.dineoutrec.presentation.ui.theme.DineoutRecTheme
 
 @Composable
-fun ProximityRestaurantListItem(
+fun ProximityRestaurantVenuesListItem(
     modifier: Modifier = Modifier,
-    restaurant: VenueItem,
-    onEvent: (ProximityRestaurantsEvent) -> Unit,
+    restaurantVenueItem: VenueItem,
+    onEvent: (ProximityRestaurantVenuesEvent) -> Unit,
     isLastItem: Boolean
 ) {
     Row(
         modifier = modifier
     ) {
-        BasicScreenInternetImage(
+        BasicAsyncImage(
             modifier = Modifier
                 .padding(
                     top = dimensionResource(
@@ -61,8 +62,16 @@ fun ProximityRestaurantListItem(
                     ),
                 ),
             contentScale = ContentScale.Crop,
-            imageUrl = restaurant.image.url,
-            errorDrawableResId = R.drawable.baseline_fastfood_24
+            imageUrl = restaurantVenueItem.image.url,
+            errorDrawableResId = R.drawable.baseline_fastfood_24,
+            contentDescription = stringResource(
+                id = R.string.cd_restaurant_venues_list_item_image,
+                restaurantVenueItem.venue.name
+            ),
+            errorContentDescription = stringResource(
+                id = R.string.cd_restaurant_venues_list_item_error_image,
+                restaurantVenueItem.venue.name
+            )
         )
         Box(
             modifier = Modifier
@@ -85,7 +94,7 @@ fun ProximityRestaurantListItem(
                 modifier = Modifier
                     .padding(
                         vertical = dimensionResource(
-                            id = R.dimen.spacing8 // TODO: Check if something else
+                            id = R.dimen.spacing8
                         )
                     )
                     .padding(
@@ -102,14 +111,13 @@ fun ProximityRestaurantListItem(
                     .align(Alignment.CenterStart)
             ) {
                 Text(
-                    text = restaurant.venue.name,
+                    text = restaurantVenueItem.venue.name,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                     style = MaterialTheme.typography.titleMedium
                 )
                 Text(
-                    // TODO: Check if to restrict this to 2 lines only
-                    text = restaurant.venue.shortDescription ?: "", // TODO: Revisit null case
+                    text = restaurantVenueItem.venue.shortDescription ?: "",
                     overflow = TextOverflow.Ellipsis,
                     color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
                         alpha = 0.6f
@@ -117,8 +125,8 @@ fun ProximityRestaurantListItem(
                     style = MaterialTheme.typography.labelLarge
                 )
             }
-            val isFavourite = restaurant.isFavourite
-            Image(
+            val isFavourite = restaurantVenueItem.isFavourite
+            Icon(
                 modifier = Modifier
                     .padding(
                         end = dimensionResource(id = R.dimen.spacing16)
@@ -126,10 +134,10 @@ fun ProximityRestaurantListItem(
                     .align(Alignment.CenterEnd)
                     .clickable {
                         onEvent(
-                            ProximityRestaurantsEvent
-                                .OnFavouriteRestaurantClick(
-                                    id = restaurant.venue.id,
-                                    isAlreadyFavourite = restaurant.isFavourite
+                            ProximityRestaurantVenuesEvent
+                                .OnFavouriteRestaurantVenueClick(
+                                    favouriteClickRestaurantVenueId = restaurantVenueItem.venue.id,
+                                    isAlreadyFavourite = restaurantVenueItem.isFavourite
                                 )
                         )
                     },
@@ -142,8 +150,9 @@ fun ProximityRestaurantListItem(
                         }
                     }
                 ),
-                contentDescription = null, // TODO: Add this for accessibility
-                alignment = Alignment.CenterEnd
+                contentDescription = stringResource(
+                    id = R.string.cd_favourite_icon_restaurant_venues_list_item
+                )
             )
             if (!isLastItem) {
                 HorizontalDivider(
@@ -154,26 +163,26 @@ fun ProximityRestaurantListItem(
     }
 }
 
-// For favourite restaurant item
+// For favourite restaurant venues list item
 @Preview(showBackground = true)
 @Composable
-private fun FavouriteProximityRestaurantListItem_Preview() {
+private fun FavouriteProximityRestaurantVenuesListItem_Preview() {
     DineoutRecTheme {
-        ProximityRestaurantListItem(
-            restaurant = getSampleRestaurantList()[0],
+        ProximityRestaurantVenuesListItem(
+            restaurantVenueItem = getSampleRestaurantList()[0],
             onEvent = {},
             isLastItem = false
         )
     }
 }
 
-// For non-favourite restaurant item
+// For non-favourite restaurant venues list item
 @Preview(showBackground = true)
 @Composable
-private fun NonFavouriteProximityRestaurantListItem_Preview() {
+private fun NonFavouriteProximityRestaurantVenuesListItem_Preview() {
     DineoutRecTheme {
-        ProximityRestaurantListItem(
-            restaurant = getSampleRestaurantList()[14],
+        ProximityRestaurantVenuesListItem(
+            restaurantVenueItem = getSampleRestaurantList()[14],
             onEvent = {},
             isLastItem = false
         )

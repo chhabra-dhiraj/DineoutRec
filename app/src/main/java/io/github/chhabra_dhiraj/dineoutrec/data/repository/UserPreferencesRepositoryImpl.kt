@@ -8,14 +8,14 @@ class UserPreferencesRepositoryImpl @Inject constructor(
     private val userPreferencesDataStore: UserPreferencesDataStore
 ) : UserPreferencesRepository {
 
-    override suspend fun getFavouriteRestaurantsIds() =
-        userPreferencesDataStore.getFavouriteRestaurantsIds()
+    override suspend fun getFavouriteRestaurantVenueIds() =
+        userPreferencesDataStore.getFavouriteRestaurantVenueIds()
 
-    override suspend fun saveFavouriteRestaurantsId(id: String) {
-        userPreferencesDataStore.saveFavouriteRestaurantsId(id)
+    override suspend fun saveFavouriteRestaurantVenueId(id: String) {
+        userPreferencesDataStore.saveFavouriteRestaurantVenueId(id)
     }
 
-    override suspend fun removeFavouriteRestaurantsId(id: String) {
-        userPreferencesDataStore.removeFavouriteRestaurantsId(id)
+    override suspend fun removeFavouriteRestaurantVenueId(id: String) {
+        userPreferencesDataStore.removeFavouriteRestaurantVenueId(id)
     }
 }

@@ -6,30 +6,31 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import io.github.chhabra_dhiraj.dineoutrec.R
-import io.github.chhabra_dhiraj.dineoutrec.domain.model.NoVenueSection
-import io.github.chhabra_dhiraj.dineoutrec.domain.sampledata.getSampleRestaurantList
+import io.github.chhabra_dhiraj.dineoutrec.domain.model.Section
+import io.github.chhabra_dhiraj.dineoutrec.domain.sample.getSampleRestaurantList
 import io.github.chhabra_dhiraj.dineoutrec.presentation.component.EmptyListPlaceholder
 import io.github.chhabra_dhiraj.dineoutrec.presentation.component.ErrorListPlaceholder
 import io.github.chhabra_dhiraj.dineoutrec.presentation.component.ListPlaceholder
 import io.github.chhabra_dhiraj.dineoutrec.presentation.component.LoadingListPlaceholder
-import io.github.chhabra_dhiraj.dineoutrec.presentation.proximityrestaurants.ProximityRestaurantsEvent
-import io.github.chhabra_dhiraj.dineoutrec.presentation.proximityrestaurants.ProximityRestaurantsState
+import io.github.chhabra_dhiraj.dineoutrec.presentation.proximityrestaurants.ProximityRestaurantVenuesEvent
+import io.github.chhabra_dhiraj.dineoutrec.presentation.proximityrestaurants.ProximityRestaurantVenuesState
 import io.github.chhabra_dhiraj.dineoutrec.presentation.ui.theme.DineoutRecTheme
 import io.github.chhabra_dhiraj.dineoutrec.presentation.util.UiText
 
 @Composable
-fun ProximityRestaurantsBody(
+fun ProximityRestaurantVenuesListBody(
     modifier: Modifier = Modifier,
-    state: ProximityRestaurantsState,
-    onEvent: (ProximityRestaurantsEvent) -> Unit
+    state: ProximityRestaurantVenuesState,
+    onEvent: (ProximityRestaurantVenuesEvent) -> Unit
 ) {
     Box(modifier = modifier) {
-        state.proximityRestaurants?.let { restaurants ->
-            if (restaurants.isNotEmpty()) {
-                ProximityRestaurantList(
-                    restaurants = restaurants,
+        state.proximityRestaurantVenueItems?.let { restaurantVenueItem ->
+            if (restaurantVenueItem.isNotEmpty()) {
+                ProximityRestaurantVenuesList(
+                    restaurantVenuesList = restaurantVenueItem,
                     onEvent = onEvent
                 )
             } else {
@@ -44,13 +45,16 @@ fun ProximityRestaurantsBody(
                     placeholder = {
                         EmptyListPlaceholder(
                             modifier = Modifier.fillMaxSize(),
-                            // TODO: Refactor this by introducing uiState
-                            title = state.noVenueSection?.title ?: "",
-                            subtitle = state.noVenueSection?.description ?: "",
+                            title = state.noRestaurantVenueSection?.title ?: stringResource(
+                                id = R.string.error_empty_restaurant_venues_list_title
+                            ),
+                            subtitle = state.noRestaurantVenueSection?.description ?: stringResource(
+                                id = R.string.error_empty_restaurant_venues_list_description
+                            ),
                             onRetry = {
                                 onEvent(
-                                    ProximityRestaurantsEvent
-                                        .OnManualRefreshProximityRestaurants
+                                    ProximityRestaurantVenuesEvent
+                                        .OnManualRefreshProximityRestaurantVenues
                                 )
                             }
                         )
@@ -85,8 +89,8 @@ fun ProximityRestaurantsBody(
                                 error = it.asString(),
                                 onRetry = {
                                     onEvent(
-                                        ProximityRestaurantsEvent
-                                            .OnManualRefreshProximityRestaurants
+                                        ProximityRestaurantVenuesEvent
+                                            .OnManualRefreshProximityRestaurantVenues
                                     )
                                 }
                             )
@@ -98,32 +102,31 @@ fun ProximityRestaurantsBody(
 }
 
 
-// For Proximity Restaurants Body
+// For Proximity Restaurant Venues List Body
 @Preview(showBackground = true)
 @Composable
-private fun ProximityRestaurantsBody_Preview() {
+private fun ProximityRestaurantVenuesListBody_Preview() {
     DineoutRecTheme {
-        ProximityRestaurantsBody(
-            state = ProximityRestaurantsState(
-                proximityRestaurants = getSampleRestaurantList()
+        ProximityRestaurantVenuesListBody(
+            state = ProximityRestaurantVenuesState(
+                proximityRestaurantVenueItems = getSampleRestaurantList()
             ),
             onEvent = {}
         )
     }
 }
 
-// For Empty Proximity Restaurants Body
+// For Empty Proximity Restaurant Venues List Body
 @Preview(showBackground = true)
 @Composable
-private fun EmptyProximityRestaurantsBody_Preview() {
+private fun EmptyProximityRestaurantVenuesListBody_Preview() {
     DineoutRecTheme {
-        ProximityRestaurantsBody(
-            state = ProximityRestaurantsState(
-                proximityRestaurants = emptyList(),
-                noVenueSection = NoVenueSection(
-                    // TODO: Review this comment
-                    // Hardcoding, as this is sample. Real comes from the network.
+        ProximityRestaurantVenuesListBody(
+            state = ProximityRestaurantVenuesState(
+                proximityRestaurantVenueItems = emptyList(),
+                noRestaurantVenueSection = Section.NoVenueSection(
                     title = "title",
+                    template = Section.Companion.TEMPLATE.NO_VENUE_SECTION,
                     description = "description"
                 )
             ),
@@ -132,13 +135,13 @@ private fun EmptyProximityRestaurantsBody_Preview() {
     }
 }
 
-// For Loading Proximity Restaurants Body
+// For Loading Proximity Restaurant Venues List Body
 @Preview(showBackground = true)
 @Composable
-private fun LoadingProximityRestaurantsBody_Preview() {
+private fun LoadingProximityRestaurantVenuesListBody_Preview() {
     DineoutRecTheme {
-        ProximityRestaurantsBody(
-            state = ProximityRestaurantsState(
+        ProximityRestaurantVenuesListBody(
+            state = ProximityRestaurantVenuesState(
                 isLoading = true
             ),
             onEvent = {}
@@ -146,13 +149,13 @@ private fun LoadingProximityRestaurantsBody_Preview() {
     }
 }
 
-// For Error Proximity Restaurants Body
+// For Error Proximity Restaurant Venues List Body
 @Preview(showBackground = true)
 @Composable
-private fun ErrorProximityRestaurantsBody_Preview() {
+private fun ErrorProximityRestaurantVenuesListBody_Preview() {
     DineoutRecTheme {
-        ProximityRestaurantsBody(
-            state = ProximityRestaurantsState(
+        ProximityRestaurantVenuesListBody(
+            state = ProximityRestaurantVenuesState(
                 error = UiText.StringResource(
                     id = R.string.str_error_unknown
                 )
